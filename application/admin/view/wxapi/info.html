@@ -1,0 +1,955 @@
+{include file="../../../application/admin/view/public/head" /}
+
+<div class="page-container p10">
+    <div class="showpic" style="display:none;"><img class="showpic_img" width="200" height="160"></div>
+	<form class="layui-form layui-form-pane" method="post" action="">
+		<div class="layui-tab" lay-filter="tb1">
+			<ul class="layui-tab-title">
+				<li class="layui-this" lay-id="configseo_1">小程序设置</li>
+				<li lay-id="configseo_2">场景设置</li>
+				<li lay-id="configseo_3">首页设置</li>
+				<li lay-id="configseo_4">详情设置</li>
+				<li lay-id="configseo_6">分类设置</li>
+				<li lay-id="configseo_7">专题设置</li>
+				<li lay-id="configseo_8">播放设置</li>
+				<li lay-id="configseo_9">我的设置</li>
+				<li lay-id="configseo_10">其他页面</li>
+			</ul>
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show">
+					<div class="layui-form-item">
+						<label class="layui-form-label">平台：</label>
+						<div class="layui-input-inline w200">
+							<input type="text" class="layui-input" value="微信" name="app" readonly unselectable="on">
+							<input name="info" type="hidden" value="info">
+						</div>
+						<label class="layui-form-label">管理员：</label>
+						<div class="layui-input-inline w300">
+							<input type="text" class="layui-input" value="{$info.admin}" placeholder="唯一标识英文" id="admin" name="admin" {if condition="$info.admin neq ''"} readonly="readonly"{/if}>
+						</div>
+						<label class="layui-form-label">APP名称：</label>
+						<div class="layui-input-inline w200">
+							<input type="text" class="layui-input" value="{$info.des}" placeholder="APP名称" name="des">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">APP标识：</label>
+						<div class="layui-input-inline w500">
+							<input type="text" class="layui-input" value="{$info.name}" placeholder="唯一标识英文" id="name" name="name" {if condition="$info.name neq ''"} readonly="readonly"{/if}>
+						</div>
+						
+					    <label class="layui-form-label">授权码</label>
+					    <div class="layui-input-inline w500">
+					        <input type="text" class="layui-input" value="{$info.WxKey}" placeholder="唯一标识英文" id="WxKey" name="WxKey" {if condition="$info.WxKey neq ''"} readonly="readonly"{/if}>
+					    </div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">小程序APPID</label>
+						<label class="layui-form-label">APPID:</label>
+						<div class="layui-input-inline w280">
+							<input type="text" name="site[appid]" placeholder="" value="{$info.site.appid}" class="layui-input">
+						</div>
+						<label class="layui-form-label">AppSecret:</label>
+						<div class="layui-input-inline w280">
+							<input type="text" name="site[AppSecret]" placeholder="" value="{$info.site.AppSecret}" class="layui-input">
+						</div>
+						<div class="layui-form-mid layui-word-aux">
+							必填,获取用户信息,放到后端比较安全
+						</div>
+					</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">数据加密：</label>
+				<div class="layui-input-inline">
+					<input type="radio" name="encrypt[radio]" value="0" title="关闭" {if condition="$info['encrypt']['radio'] neq 1"}checked {/if}>
+					<input type="radio" name="encrypt[radio]" value="1" title="开启" {if condition="$info['encrypt']['radio'] eq 1"}checked {/if}>
+				</div>
+				<label class="layui-form-label">iv:</label>
+				<div class="layui-input-inline w280">
+					<input type="text" name="encrypt[iv]" placeholder="必须为16位字符串" value="{$info['encrypt']['iv']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">key:</label>
+				<div class="layui-input-inline w280">
+					<input type="text" name="encrypt[key]" placeholder="必须为16位字符串" value="{$info['encrypt']['key']}" class="layui-input">
+				</div>
+				<div class="layui-form-mid layui-word-aux">
+                       说明:与小程序端加密密码相对应,iv/key必须为16位字符串
+				</div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">订阅消息：</label>
+				<div class="layui-input-inline w80">
+					<select style="width:80px;" name="site[message][radio]">
+						<option value="0" {if condition="$info['site']['message']['radio'] eq 0"}selected {/if}>关闭</option>
+						<option value="1" {if condition="$info['site']['message']['radio'] eq 1"}selected {/if}>开启</option>
+					</select>
+				</div>
+				<label class="layui-form-label">消息模版：</label>
+				<div class="layui-input-inline w500">
+					<input type="text" name="site[message][tmpIds]" placeholder="" value="{$info.site.message.tmpIds}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">分享二维码：</label>
+				<div class="layui-input-inline w500 upload">
+					<input type="text" name="site[sharepic]" placeholder="图片地址或路径" value="{$info.site.sharepic}" id="sharepic" name="sharepic" class="layui-input upload-input">
+				</div>
+				<div class="layui-input-inline ">
+                    <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:'site[sharepic]'}}" id="upload1">上传图片</button>
+                </div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">客服：</label>
+				<div class="layui-input-inline w120">
+					<select style="width:80px;" name="site[kefu][type]">
+						<option value="0" {if condition="$info['site']['kefu']['type'] eq 0"}selected {/if}>网页</option>
+						<option value="1" {if condition="$info['site']['kefu']['type'] eq 1"}selected {/if}>图片</option>
+					</select>
+				</div>
+				<label class="layui-form-label">地址</label>
+				<div class="layui-input-inline w400">
+					<input type="text" name="site[kefu][url]" placeholder="" value="{$info.site.kefu.url}" class="layui-input upload-input">
+				</div>
+				<div class="layui-input-inline ">
+                    <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:'site[kefu][url]'}}" id="upload1">上传图片</button>
+                </div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">分享类型：</label>
+				<div class="layui-input-inline w120">
+					<select style="width:80px;" name="site[share][type]">
+						<option value="0" {if condition="$info['site']['share']['type'] eq 0"}selected {/if}>固定分享</option>
+						<option value="1" {if condition="$info['site']['share']['type'] eq 1"}selected {/if}>动态生成</option>
+					</select>
+				</div>
+				<label class="layui-form-label">动态分享文字</label>
+				<div class="layui-input-inline w280">
+					<input type="text" name="site[share][wxText]" placeholder="" value="{$info.site.share.wxText}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">动态图片储存：</label>
+				<div class="layui-input-inline w120">
+					<select style="width:80px;" name="site[file][type]">
+						<option value="0" {if condition="$info['file']['type'] eq 0"}selected {/if}>本地存储</option>
+						<option value="1" {if condition="$info['file']['type'] eq 1"}selected {/if}>七牛云</option>
+						<option value="3" {if condition="$info['file']['type'] eq 2"}selected {/if}>图片外链</option>
+					</select>
+				</div>
+				<label class="layui-form-label">七牛ak：</label>
+				<div class="layui-input-inline w750">
+					<input type="text" name="site[file][qiniu][ak]" placeholder="" value="{$info.site.file.qiniu.ak}" class="layui-input">
+				</div>
+				<label class="layui-form-label">七牛sk：</label>
+				<div class="layui-input-inline w750">
+					<input type="text" name="site[file][qiniu][sk]" placeholder="" value="{$info.site.file.qiniu.sk}" class="layui-input">
+				</div>
+				<label class="layui-form-label">七牛空间名：</label>
+				<div class="layui-input-inline w750">
+					<input type="text" name="site[file][qiniu][name]" placeholder="" value="{$info.site.file.qiniu.name}" class="layui-input">
+				</div>
+				<label class="layui-form-label">七牛域名：</label>
+				<div class="layui-input-inline w750">
+					<input type="text" name="site[file][qiniu][host]" placeholder="" value="{$info.site.file.qiniu.host}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">客户端检测：</label>
+				<div class="layui-input-inline">
+					<input type="radio" name="site[platform]" value="0" title="关闭" {if condition="$info['site']['platform'] neq 1"}checked {/if}>
+					<input type="radio" name="site[platform]" value="1" title="开启" {if condition="$info['site']['platform'] eq 1"}checked {/if}>
+				</div>
+				<div class="layui-form-mid layui-word-aux">
+					非手机端不显示播放按钮
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">IP控制：</label>
+				<div class="layui-input-inline">
+					<input type="radio" name="site[ip][radio]" value="0" title="关闭" {if condition="$info['site']['ip']['radio'] neq 1"}checked {/if}>
+					<input type="radio" name="site[ip][radio]" value="1" title="开启" {if condition="$info['site']['ip']['radio'] eq 1"}checked {/if}>
+				</div>
+				<div class="layui-form-mid layui-word-aux">
+					限制腾讯云IP
+				</div>
+				<label class="layui-form-label w100">物理地址:</label>
+				<div class="layui-input-inline w100">
+					<input type="text" name="site[ip][text]" placeholder="如:腾讯云" value="{$info.site.ip.text}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">登录次数：</label>
+				<div class="layui-input-inline">
+					<input type="radio" name="site[login][radio]" value="0" title="关闭" {if condition="$info['site']['login']['radio'] neq 1"}checked {/if}>
+					<input type="radio" name="site[login][radio]" value="1" title="开启" {if condition="$info['site']['login']['radio'] eq 1"}checked {/if}>
+				</div>
+				<label class="layui-form-label">登录次数大于：</label>
+				<div class="layui-input-inline w100">
+					<input type="text" name="site[login][num]" placeholder="开启免审核" value="{$info.site.login.num}" class="layui-input">
+				</div>
+				<div class="layui-form-mid layui-word-aux">
+					登录次数大于多少次,审核时可以开启观看功能
+				</div>
+			</div>
+		</div>
+		<!--场景设置-->
+		<div class="layui-tab-item">
+			<blockquote class="layui-elem-quote layui-text" style="margin:20px 0;border-left-color: #ff5722;">
+				<p>
+					1、审核时可以全关闭!
+				</p>
+				<p>
+					2、选取为允许播放,或选择安全的场景值(为了防止被封选择安全的场景值,后期可以根据不同场景添加)
+				</p>
+			</blockquote>
+			<div class="layui-form-item">
+				<label class="layui-form-label">播放场景值：</label>
+				<div class="layui-input-block role-list-form">
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1000" title="其他1000" {if condition="strpos($info['weeks'],'1000')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1001" title="发现栏入口1001" {if condition="strpos($info['weeks'],'1001')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1005" title="搜索入口1005" {if condition="strpos($info['weeks'],'1005')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1006" title="搜索入口1006" {if condition="strpos($info['weeks'],'1006')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1007" title="单聊入口1007" {if condition="strpos($info['weeks'],'1007')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1008" title="群聊入口1008" {if condition="strpos($info['weeks'],'1008')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1010" title="收藏夹1010" {if condition="strpos($info['weeks'],'1010')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1011" title="扫码进入1011" {if condition="strpos($info['weeks'],'1011')!==false"}checked{/if}>
+					<!--<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1012" title="识别二维码1012" {if condition="strpos($info['weeks'],'1012')!==false"}checked{/if}>-->
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1013" title="相册二维码1013" {if condition="strpos($info['weeks'],'1013')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1014" title="模版消息1014" {if condition="strpos($info['weeks'],'1014')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1017" title="体验版入口1017" {if condition="strpos($info['weeks'],'1017')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1022" title="聊天顶部1022" {if condition="strpos($info['weeks'],'1022')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1023" title="安卓桌面1023" {if condition="strpos($info['weeks'],'1023')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1024" title="小程序profile1024" {if condition="strpos($info['weeks'],'1024')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1027" title="使用过的1027" {if condition="strpos($info['weeks'],'1027')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1035" title="公众号菜单1035" {if condition="strpos($info['weeks'],'1035')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1036" title="APP分享1036" {if condition="strpos($info['weeks'],'1036')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1037" title="小程序进入1037" {if condition="strpos($info['weeks'],'1037')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1038" title="小程序返回1038" {if condition="strpos($info['weeks'],'1038')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1042" title="添加好友搜索框1042" {if condition="strpos($info['weeks'],'1042')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1043" title="公众号消息1043" {if condition="strpos($info['weeks'],'1043')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1044" title="shareTicket消息1044(常用)" {if condition="strpos($info['weeks'],'1044')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1047" title="扫小程序码1047" {if condition="strpos($info['weeks'],'1047')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1048" title="识别小程序码1048" {if condition="strpos($info['weeks'],'1048')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1049" title="相册小程序码1049" {if condition="strpos($info['weeks'],'1049')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1053" title="搜一搜1053" {if condition="strpos($info['weeks'],'1053')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1054" title="顶部搜索框1054" {if condition="strpos($info['weeks'],'1054')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1058" title="公众号文章1058" {if condition="strpos($info['weeks'],'1058')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1073" title="客服消息列表下发1073(常用)" {if condition="strpos($info['weeks'],'1073')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1074" title="公众号会话下发1074(常用)" {if condition="strpos($info['weeks'],'1074')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1089" title="主界面下拉1089(常用)" {if condition="strpos($info['weeks'],'1089')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1090" title="长按小程序右上角菜单1090" {if condition="strpos($info['weeks'],'1090')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1091" title="公众号文章1091" {if condition="strpos($info['weeks'],'1091')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1092" title="城市服务入口1092" {if condition="strpos($info['weeks'],'1092')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1096" title="聊天记录1096(常用)" {if condition="strpos($info['weeks'],'1096')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1106" title="搜索常用小程序1106" {if condition="strpos($info['weeks'],'1106')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1107" title="订阅消息1107" {if condition="strpos($info['weeks'],'1107')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1113" title="安卓手机负一屏1113" {if condition="strpos($info['weeks'],'1113')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1114" title="安卓手机侧边栏1114" {if condition="strpos($info['weeks'],'1114')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1131" title="悬浮打开1131" {if condition="strpos($info['weeks'],'1131')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1155" title="朋友圈单页1155(常用)" {if condition="strpos($info['weeks'],'1155')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1154" title="朋友圈单页1154(常用)" {if condition="strpos($info['weeks'],'1154')!==false"}checked{/if}>
+					<input type="checkbox" name="weeks[]" class="layui-checkbox" lay-skin="primary" value="1169" title="生活服务入口1169(常用)" {if condition="strpos($info['weeks'],'1169')!==false"}checked{/if}>
+				</div>
+				<div class="layui-input-block">
+		    	   <button type="button" class="layui-btn layui-btn-normal formCheckAll" lay-filter="formCheckAll" >全选</button>
+			       <button type="button" class="layui-btn layui-btn-normal formCheckOther" lay-filter="formCheckOther">反选</button>
+	         	</div>
+			</div>
+		</div>
+		<!--首页设置-->
+		<div class="layui-tab-item">
+			<div class="layui-form-item">
+				<label class="layui-form-label">首页微信广告id</label>
+				<label class="layui-form-label">插屏广告id:</label>
+				<div class="layui-input-inline w550">
+					<input type="text" name="index[wxAdId][cpId]" placeholder="" value="{$info['index']['wxAdId']['cpId']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">原生广告id:</label>
+				<div class="layui-input-inline w550">
+					<input type="text" name="index[wxAdId][ysId]" placeholder="" value="{$info['index']['wxAdId']['ysId']}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">首页弹窗：</label>
+				<div class="layui-input-inline w80">
+					<select style="width:80px;" name="index[tanchuang][radio]">
+						<option value="0" {if condition="$info['index']['tanchuang']['radio'] eq 0"}selected {/if}>关闭</option>
+						<option value="1" {if condition="$info['index']['tanchuang']['radio'] eq 1"}selected {/if}>开启</option>
+					</select>
+				</div>
+				<div class="layui-input-inline w100">
+					<select style="width:100px;" name="index[tanchuang][type]">
+						<option value="0" {if condition="$info['index']['tanchuang']['type'] eq 0"}selected {/if}>网页</option>
+						<option value="1" {if condition="$info['index']['tanchuang']['type'] eq 1"}selected {/if}>跳转</option>
+						<option value="2" {if condition="$info['index']['tanchuang']['type'] eq 2"}selected {/if}>图片</option>
+						<option value="2" {if condition="$info['index']['tanchuang']['type'] eq 3"}selected {/if}>富文本</option>
+					</select>
+				</div>
+				<label class="layui-form-label">图片:</label>
+				<div class="layui-input-inline w280">
+					<input type="text" name="index[tanchuang][image]" placeholder="" value="{$info['index']['tanchuang']['image']}" class="layui-input upload-input">
+				</div>
+				<div class="layui-input-inline ">
+                    <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:'index[tanchuang][image]'}}" id="upload1">上传图片</button>
+                </div>
+				<label class="layui-form-label">地址:</label>
+				<div class="layui-input-inline w280">
+					<input type="text" name="index[tanchuang][url]" placeholder="" value="{$info['index']['tanchuang']['url']}" class="layui-input upload-input">
+				</div>
+				<div class="layui-input-inline ">
+                    <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:'index[tanchuang][url]'}}" id="upload1">上传图片</button>
+                </div>
+				<div class="layui-form-mid layui-word-aux">
+					说明:关闭后24小时弹窗1次,图片为空不弹窗,复制为点击图片,复制内容,跳转为跳转到小程序,小程序无法跳转到浏览器
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label">首页分享</label>
+				<label class="layui-form-label">标题:</label>
+				<div class="layui-input-inline w300">
+					<input type="text" name="index[share][title]" placeholder="" value="{$info['index']['share']['title']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">图片:</label>
+				<div class="layui-input-inline w300">
+					<input type="text" name="index[share][image]" placeholder="" value="{$info['index']['share']['image']}" class="layui-input upload-input">
+				</div>
+				<div class="layui-input-inline ">
+                    <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:'index[share][image]'}}" id="upload1">上传图片</button>
+                </div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">首页公告：</label>
+				<div class="layui-input-inline w700">
+					<input type="text" name="index[notice]" placeholder="" value="{$info.index.notice}" class="layui-input">
+				</div>
+			</div>
+			<div>
+				<label class="layui-form-label">首页分类ID：</label>
+				<div class="layui-input-block">
+					<a class="layui-btn layui-btn-sm layui-btn-normal" href="javascript:;" onclick="add_indexType()">添加首页分类</a>
+				</div>
+			</div>
+			<script>
+                var sy_type_len = {$info.index.sy_type|count};
+                var vodPlayer_len = {$info.play.vodPlayer.id|count};
+            </script>
+			<div class="contents" id="indexType" >
+				{volist name="$info.index.sy_type" id="vo"}
+				<div class="layui-form-item" data-i="{$key}" >
+					<label class="layui-form-label">{$key}分类ID：</label>
+					<div class="layui-input-inline">
+						<input type="text" name="index[sy_type][type_id][]" placeholder="请输入" value="{$vo.type_id}" class="layui-input">
+					</div>
+					<div class="layui-form-mid">分类名称：</div>
+					<div class="layui-input-inline">
+						<input type="text" name="index[sy_type][type_name][]" placeholder="请输入" value="{$vo.type_name}" class="layui-input">
+					</div>
+					<div class="layui-input-inline w400 p10">
+					    <a href="javascript:void(0)" class="j-editor-remove">删除</a>&nbsp;
+				    	&nbsp;<a href="javascript:void(0)" class="j-editor-up">上移</a>&nbsp;
+				    	<a href="javascript:void(0)" class="j-editor-down">下移</a>&nbsp;
+			        </div>
+				</div>
+				 {/volist}
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">首页更多：</label>
+				<div class="layui-input-inline w200">
+					<select style="width:200px;" name="index[more]">
+						<option value="0" {if condition="$info['index']['more'] eq 0"}selected {/if}>跳转分类</option>
+						<option value="1" {if condition="$info['index']['more'] eq 1"}selected {/if}>推荐全部</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="layui-tab-item">
+			<div class="layui-form-item">
+				<label class="layui-form-label">跳转播放：</label>
+				<div class="layui-input-inline">
+					<input type="radio" name="detail[play][radio]" value="0" title="关闭" {if condition="$info['detail']['play']['radio'] neq 1"}checked {/if}>
+					<input type="radio" name="detail[play][radio]" value="1" title="开启" {if condition="$info['detail']['play']['radio'] eq 1"}checked {/if}>
+				</div>
+				<label class="layui-form-label">跳转APPid:</label>
+				<div class="layui-input-inline w480">
+					<input type="text" name="detail[play][APPID]" placeholder="" value="{$info.detail.play.APPID}" class="layui-input">
+				</div>
+
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">豆瓣总开关：</label>
+				<div class="layui-input-inline">
+					<input name="detail[douban]" type="radio" id="rad-1" value="0" title="关闭" {if condition="$info['detail']['douban'] neq 1"}checked {/if}>
+					<input name="detail[douban]" type="radio" id="rad-2" value="1" title="开启" {if condition="$info['detail']['douban'] eq 1"}checked {/if}>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">豆瓣更新：</label>
+				<div class="layui-input-inline">
+					<input name="detail[dbUpdate]" type="radio" id="rad-1" value="0" title="关闭" {if condition="$info['detail']['dbUpdate'] neq 1"}checked {/if}>
+					<input name="detail[dbUpdate]" type="radio" id="rad-2" value="1" title="开启" {if condition="$info['detail']['dbUpdate'] eq 1"}checked {/if}>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">豆瓣剧照：</label>
+				<div class="layui-input-inline">
+					<input name="detail[dbStills]" type="radio" id="rad-1" value="0" title="关闭" {if condition="$info['detail']['dbStills'] neq 1"}checked {/if}>
+					<input name="detail[dbStills]" type="radio" id="rad-2" value="1" title="开启" {if condition="$info['detail']['dbStills'] eq 1"}checked {/if}>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">详情广告：</label>
+				<div class="layui-input-inline w80">
+					<select style="width:80px;" name="detail[gg][radio]">
+						<option value="0" {if condition="$info['detail']['gg']['radio'] eq 0"}selected {/if}>关闭</option>
+						<option value="1" {if condition="$info['detail']['gg']['radio'] eq 1"}selected {/if}>开启</option>
+					</select>
+				</div>
+				<div class="layui-input-inline w100">
+					<select style="width:100px;" name="detail[gg][type]">
+						<option value="0" {if condition="$info['detail']['gg']['type'] eq 0"}selected {/if}>网页</option>
+						<option value="1" {if condition="$info['detail']['gg']['type'] eq 1"}selected {/if}>跳转</option>
+						<option value="2" {if condition="$info['detail']['gg']['type'] eq 2"}selected {/if}>图片</option>
+						<option value="3" {if condition="$info['detail']['gg']['type'] eq 3"}selected {/if}>富文本</option>
+					</select>
+				</div>
+				<label class="layui-form-label">图片:</label>
+				<div class="layui-input-inline w280">
+					<input type="text" name="detail[gg][image]" placeholder="" value="{$info['detail']['gg']['image']}"class="layui-input upload-input">
+				</div>
+				<div class="layui-input-inline ">
+                    <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:'detail[gg][image]'}}" id="upload1">上传图片</button>
+                </div>
+				<label class="layui-form-label">地址:</label>
+				<div class="layui-input-inline w280">
+					<input type="text" name="detail[gg][url]" placeholder="" value="{$info['detail']['gg']['url']}" class="layui-input upload-input">
+				</div>
+				<div class="layui-input-inline ">
+                    <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:'detail[gg][url]'}}" id="upload1">上传图片</button>
+                </div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">微信广告id</label>
+				<label class="layui-form-label">插屏广告id:</label>
+				<div class="layui-input-inline w550">
+					<input type="text" name="detail[wxAdId][cpId]" placeholder="" value="{$info['detail']['wxAdId']['cpId']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">原生id:</label>
+				<div class="layui-input-inline w550">
+					<input type="text" name="detail[wxAdId][ysId]" placeholder="" value="{$info['detail']['wxAdId']['ysId']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">激励视频id:</label>
+				<div class="layui-input-inline w550">
+					<input type="text" name="detail[wxAdId][jlspId]" placeholder="" value="{$info['detail']['wxAdId']['jlspId']}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">广告提示文字：</label>
+				<label class="layui-form-label">加载文字：</label>
+				<div class="layui-input-inline w350">
+					<input type="text" name="detail[adMsg][start]" placeholder="" value="{$info['detail']['adMsg']['start']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">关闭文字：</label>
+				<div class="layui-input-inline w350">
+					<input type="text" name="detail[adMsg][close]" placeholder="" value="{$info['detail']['adMsg']['close']}" class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div class="layui-tab-item">
+			<div class="layui-form-item">
+				<label class="layui-form-label">原生广告id:</label>
+				<div class="layui-input-inline w300">
+					<input type="text" name="feilei[wxAdId][ysId]" placeholder="" value="{$info['feilei']['wxAdId']['ysId']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">插屏广告id:</label>
+				<div class="layui-input-inline w300">
+					<input type="text" name="feilei[wxAdId][cpId]" placeholder="" value="{$info['feilei']['wxAdId']['cpId']}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">分类列表类型：</label>
+				<div class="layui-input-block">
+					<textarea name="feilei[type_class]" class="layui-textarea" placeholder="JSON格式">{$info['feilei']['type_class']}</textarea>
+				</div>
+			</div>
+		</div>
+		<div class="layui-tab-item">
+			<div class="layui-form-item">
+				<label class="layui-form-label">原生广告id:</label>
+				<div class="layui-input-inline w300">
+					<input type="text" name="topic[wxAdId][ysId]" placeholder="" value="{$info['topic']['wxAdId']['ysId']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">插屏广告id:</label>
+				<div class="layui-input-inline w300">
+					<input type="text" name="topic[wxAdId][cpId]" placeholder="" value="{$info['topic']['wxAdId']['cpId']}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">标签列表：</label>
+				<div class="layui-input-block">
+					<textarea name="topic[tags]" class="layui-textarea" placeholder="JSON格式,不填则不显示">{$info['topic']['tags']}</textarea>
+				</div>
+			</div>
+		</div>
+		<div class="layui-tab-item">
+			<div class="layui-form-item">
+				<label class="layui-form-label">激励广告：</label>
+				<div class="layui-input-inline w120">
+					<select style="width:120px;" name="play[isPoints]">
+						<option value="0" {if condition="$info['play']['isPoints'] eq 0"}selected {/if}>关闭</option>
+						<option value="1" {if condition="$info['play']['isPoints'] eq 1"}selected {/if}>开启</option>
+					</select>
+				</div>
+				<label class="layui-form-label">是否强制：</label>
+				<div class="layui-input-inline w120">
+					<select style="width:120px;" name="play[enforce]">
+						<option value="0" {if condition="$info['play']['enforce'] eq 0"}selected {/if}>关闭</option>
+						<option value="1" {if condition="$info['play']['enforce'] eq 1"}selected {/if}>强制</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">多少秒触发:</label>
+				<div class="layui-input-inline w280">
+					<input type="text" name="play[second]" placeholder="播放多少秒触发广告" value="{$info['play']['second']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">每天几次:</label>
+				<div class="layui-input-inline w280">
+                    <input type="text" name="play[num]" placeholder="每天播放几次" value="{$info['play']['num']}" class="layui-input">
+                </div>
+                <label class="layui-form-label">每次间隔:</label>
+				<div class="layui-input-inline w280">
+                    <input type="number" name="play[interval]" placeholder="每次间隔时长(小时)" value="{$info['play']['interval']/3600}" class="layui-input">
+                </div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">广告提示文字：</label>
+				<label class="layui-form-label">加载文字：</label>
+				<div class="layui-input-inline w350">
+					<input type="text" name="play[adMsg][start]" placeholder="" value="{$info['play']['adMsg']['start']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">关闭文字：</label>
+				<div class="layui-input-inline w350">
+					<input type="text" name="play[adMsg][close]" placeholder="" value="{$info['play']['adMsg']['close']}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">播放页图片广告：</label>
+				<div class="layui-input-inline w80">
+					<select style="width:80px;" name="play[gg][radio]">
+						<option value="0" {if condition="$info['play']['gg']['radio'] eq 0"}selected {/if}>关闭</option>
+						<option value="1" {if condition="$info['play']['gg']['radio'] eq 1"}selected {/if}>开启</option>
+					</select>
+				</div>
+				<div class="layui-input-inline w100">
+					<select style="width:100px;" name="play[gg][type]">
+						<option value="0" {if condition="$info['play']['gg']['type'] eq 0"}selected {/if}>网页</option>
+						<option value="1" {if condition="$info['play']['gg']['type'] eq 1"}selected {/if}>跳转</option>
+						<option value="2" {if condition="$info['play']['gg']['type'] eq 2"}selected {/if}>图片</option>
+						<option value="3" {if condition="$info['play']['gg']['type'] eq 3"}selected {/if}>富文本</option>
+					</select>
+				</div>
+				<label class="layui-form-label">图片:</label>
+				<div class="layui-input-inline w280">
+					<input type="text" name="play[gg][image]" placeholder="" value="{$info['play']['gg']['image']}" class="layui-input upload-input">
+				</div>
+				<div class="layui-input-inline ">
+                    <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:'play[gg][url]'}}" id="upload1">上传图片</button>
+                </div>
+				<label class="layui-form-label">地址:</label>
+				<div class="layui-input-inline w480">
+					<input type="text" name="play[gg][url]" placeholder="" value="{$info['play']['gg']['url']}" class="layui-input upload-input">
+				</div>
+				<div class="layui-input-inline ">
+                    <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:'play[gg][url]'}}" id="upload1">上传图片</button>
+                </div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">激励视频id:</label>
+				<div class="layui-input-inline w550">
+					<input type="text" name="play[wxAdId][jlspId]" placeholder="" value="{$info['play']['wxAdId']['jlspId']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">插屏广告id:</label>
+				<div class="layui-input-inline w550">
+					<input type="text" name="play[wxAdId][cpId]" placeholder="" value="{$info['play']['wxAdId']['cpId']}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">视频前贴id:</label>
+				<div class="layui-input-inline w550">
+					<input type="text" name="play[wxAdId][spqtId]" placeholder="" value="{$info['play']['wxAdId']['spqtId']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">原生id:</label>
+				<div class="layui-input-inline w550">
+					<input type="text" name="play[wxAdId][ysId]" placeholder="" value="{$info['play']['wxAdId']['ysId']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">原生格子广告id:</label>
+				<div class="layui-input-inline w550">
+					<input type="text" name="play[wxAdId][ysgzId]" placeholder="" value="{$info['play']['wxAdId']['ysgzId']}" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item" >
+				<label class="layui-form-label">播放组顺序：</label>
+				<div class="layui-input-block">
+					<a class="layui-btn layui-btn-sm layui-btn-normal" href="javascript:;" onclick="add_vodPlayer()">添加播放组</a>
+				</div>
+				<div class="layui-form-mid layui-word-aux">
+					可以把播放速度快的资源,排序到前必需包含全部播放源,否则出现排序不完整
+				</div>
+                
+			</div>
+
+			<div class="contents" id="vodPlayer">
+			    {volist name="$info.play.vodPlayer.id" id="vo" key="i"}
+				<div class="layui-form-item">
+					<label class="layui-form-label">内容：</label>
+					<div class="layui-input-inline">
+						<input type="text" name="play[vodPlayer][id][]" placeholder="请输入内容" value="{$vo}" class="layui-input">
+					</div>
+					<div class="layui-form-mid">
+						颜色：
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" name="play[vodPlayer][title][]" placeholder="请输入文字颜色" value="{$info['play']['vodPlayer']['title'][$i-1]}" class="layui-input">
+					</div>
+					<div class="layui-input-inline w400 p10">
+					    <a href="javascript:void(0)" class="j-editor-remove">删除</a>&nbsp;
+				    	<a href="javascript:void(0)" class="j-editor-up">上移</a>&nbsp;
+				    	<a href="javascript:void(0)" class="j-editor-down">下移</a>&nbsp;
+			        </div>
+					<hr>
+				</div>
+                {/volist} 
+			</div>
+			<div class="layui-form-item" id="danmuList">
+				<label class="layui-form-label">播放页公告：</label>
+				<div class="layui-input-block">
+					<a class="layui-btn layui-btn-sm layui-btn-normal" href="javascript:;" onclick="add_danmuList()">添加一条弹幕</a>
+				</div>
+                            {volist name="$info.play.danmuList" id="vo"}
+				<div class="layui-form-item mt10">
+					<label class="layui-form-label">内容：</label>
+					<div class="layui-input-inline">
+						<input type="text" name="play[danmuList][text][]" placeholder="请输入内容" value="{$vo.text}" class="layui-input">
+					</div>
+					<div class="layui-form-mid">
+						颜色：
+					</div>
+					<div class="layui-input-inline">
+						<input type="color" name="play[danmuList][color][]" placeholder="请输入文字颜色" value="{$vo.color}" class="layui-input color">
+					</div>
+					<div class="layui-form-mid">
+						时间：
+					</div>
+					<div class="layui-input-inline">
+						<input type="text" name="play[danmuList][time][]" placeholder="请输入时间" value="{$vo.time}" class="layui-input">
+					</div>
+					<a class="layui-btn layui-btn-xs" href="javascript:;" onclick="del_more(this)">删除</a>
+				</div>
+				<hr>
+                            {/volist}
+			</div>
+		</div>
+		<div class="layui-tab-item">
+			    <div class="layui-form-item">
+				<label class="layui-form-label">我的图片广告：</label>
+				<div class="layui-input-inline w80">
+					<select style="width:80px;" name="wode[gg][radio]">
+						<option value="0" {if condition="$info['wode']['gg']['radio'] eq 0"}selected {/if}>关闭</option>
+						<option value="1" {if condition="$info['wode']['gg']['radio'] eq 1"}selected {/if}>开启</option>
+					</select>
+				</div>
+				<div class="layui-input-inline w100">
+					<select style="width:100px;" name="wode[gg][type]">
+						<option value="0" {if condition="$info['wode']['gg']['type'] eq 0"}selected {/if}>网页</option>
+						<option value="1" {if condition="$info['wode']['gg']['type'] eq 1"}selected {/if}>跳转</option>
+						<option value="2" {if condition="$info['wode']['gg']['type'] eq 2"}selected {/if}>图片</option>
+						<option value="3" {if condition="$info['wode']['gg']['type'] eq 3"}selected {/if}>富文本</option>
+					</select>
+				</div>
+				<label class="layui-form-label">图片:</label>
+				<div class="layui-input-inline w280">
+					<input type="text" name="wode[gg][image]" placeholder="" value="{$info['wode']['gg']['image']}" class="layui-input upload-input">
+				</div>
+				<div class="layui-input-inline ">
+                    <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:'wode[gg][url]'}}" id="upload1">上传图片</button>
+                </div>
+				<label class="layui-form-label">地址:</label>
+				<div class="layui-input-inline w280">
+					<input type="text" name="wode[gg][url]" placeholder="" value="{$info['wode']['gg']['url']}" class="layui-input upload-input">
+				</div>
+				<div class="layui-input-inline ">
+                    <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:'wode[gg][url]'}}" id="upload1">上传图片</button>
+                </div>
+			
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">免责声明:</label>
+					<div class="layui-input-inline w700">
+						<input type="text" name="wode[statement]" placeholder="" value="{$info['wode']['statement']}" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">原生广告id:</label>
+					<div class="layui-input-inline w300">
+						<input type="text" name="wode[wxAdId][ysId]" placeholder="" value="{$info['wode']['wxAdId']['ysId']}" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">显示更多：</label>
+					<div class="layui-input-inline">
+						<input type="radio" name="wode[more][radio]" value="0" title="关闭" {if condition="$info['wode']['more']['radio'] neq 1"}checked {/if}>
+						<input type="radio" name="wode[more][radio]" value="1" title="开启" {if condition="$info['wode']['more']['radio'] eq 1"}checked {/if}>
+					</div>
+				</div>
+				<div class="layui-form-item" id="more">
+					<label class="layui-form-label">更多小程序：</label>
+					<div class="layui-input-block">
+						<a class="layui-btn layui-btn-sm layui-btn-normal" href="javascript:;" onclick="add_more()">添加更多小程序</a>
+					</div>
+                            {volist name="$info.wode.more.list" id="vo"}
+					<div class="layui-form-item mt10">
+						<label class="layui-form-label">图片：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="wode[more][list][img][]" placeholder="请输入" value="{$vo.img}" class="layui-input">
+						</div>
+						<div class="layui-form-mid">
+							appid：
+						</div>
+						<div class="layui-input-inline">
+							<input type="text" name="wode[more][list][appid][]" placeholder="请输入" value="{$vo.appid}" class="layui-input">
+						</div>
+						<div class="layui-form-mid">名称：</div>
+						<div class="layui-input-inline">
+							<input type="text" name="wode[more][list][name][]" placeholder="请输入" value="{$vo.name}" class="layui-input">
+						</div>
+						<a class="layui-btn layui-btn-xs" href="javascript:;" onclick="del_more(this)">删除</a>
+					</div>
+					<hr>
+                            {/volist}
+				</div>
+		</div>
+
+		<div class="layui-tab-item">
+			<div class="layui-form-item">
+				<label class="layui-form-label">其他页广告id</label>
+				<label class="layui-form-label">Banner 广告id:</label>
+				<div class="layui-input-inline w300">
+					<input type="text" name="other[wxAdId][bannerId]" placeholder="" value="{$info['other']['wxAdId']['bannerId']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">插屏广告id:</label>
+				<div class="layui-input-inline w300">
+					<input type="text" name="other[wxAdId][cpId]" placeholder="" value="{$info['other']['wxAdId']['cpId']}" class="layui-input">
+				</div>
+				<label class="layui-form-label">原生id:</label>
+				<div class="layui-input-inline w550">
+					<input type="text" name="other[wxAdId][ysId]" placeholder="" value="{$info['other']['wxAdId']['ysId']}" class="layui-input">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item center">
+		<div class="layui-input-block">
+			<!--<button type="button" class="layui-btn layui-btn-normal formCheckAll" lay-filter="formCheckAll" >全选</button>-->
+			<!--<button type="button" class="layui-btn layui-btn-normal formCheckOther" lay-filter="formCheckOther">反选</button>-->
+			<button type="submit" class="layui-btn" lay-submit="" lay-filter="formSubmit" data-child="true">保 存</button>
+			<!--<button class="layui-btn layui-btn-warm" type="reset">还 原</button>-->
+		</div>
+	</div>
+</div>
+</form>
+</div>
+{include file="../../../application/admin/view/public/foot" /}
+<script type="text/javascript">
+
+    layui.use(['form', 'upload', 'layer'], function () {
+        // 操作对象
+        var form = layui.form
+                , layer = layui.layer
+                 , upload = layui.upload
+                , $ = layui.jquery;
+
+        // 验证
+        form.verify({
+            from: function (value) {
+                if (value == "") {
+                    return "请输入编码";
+                }
+            },
+            show: function (value) {
+                if (value == "") {
+                    return "请输入名称";
+                }
+            }
+        });
+
+        $('.formCheckAll').click(function(){
+            var child = $('.role-list-form').find('input');
+            /* 自动选中子节点 */
+            child.each(function(index, item) {
+                item.checked = true;
+            });
+            form.render('checkbox');
+        });
+        $('.formCheckOther').click(function(){
+            var child = $('.role-list-form').find('input');
+            /* 自动选中子节点 */
+            child.each(function(index, item) {
+                item.checked = (item.checked  ? false : true);
+            });
+            form.render('checkbox');
+        });
+        upload.render({
+            elem: '.layui-upload'
+            ,url: "{:url('upload/upload')}?flag=vod"
+            ,method: 'post'
+            ,before: function(input) {
+                layer.msg('文件上传中...', {time:3000000});
+            },done: function(res, index, upload) {
+                var obj = this.item;
+                if (res.code == 0) {
+                    layer.msg(res.msg);
+                    return false;
+                }
+                layer.closeAll();
+                var input = $(obj).parent().parent().find('.upload-input');
+                if ($(obj).attr('lay-type') == 'image') {
+                    input.siblings('img').attr('src','https://' + window.location.host  + '/' + res.data.file).show();
+                }
+                input.val('https://' + window.location.host  + '/' + res.data.file);
+
+                if(res.data.thumb_class !=''){
+                    $('.'+ res.data.thumb_class).val(res.data.thumb[0].file);
+                }
+            }
+        });
+        upload.render({
+            elem: '.j-editor-upload'
+            , url: "{:url('upload/upload')}?flag=vod_file"
+            , method: 'post'
+            , exts: 'mp4|mp3|mkv|torrent|zip|txt|rar'
+            , before: function (input) {
+                layer.msg('文件上传中...', {time: 3000000});
+            }, done: function (res, index, upload) {
+                var obj = this.item;
+                if (res.code == 0) {
+                    layer.msg(res.msg);
+                    return false;
+                }
+                layer.closeAll();
+                var txt = $(obj).parent().parent().find('textarea').val();
+                if (txt != '') {
+                    txt += "\r\n";
+                }
+                $(obj).parent().parent().find('textarea').val(txt + ROOT_PATH + "/" + res.data.file);
+            }
+        });
+
+
+
+
+        $('.upload-input').hover(function (e){
+            var e = window.event || e;
+            var imgsrc = $(this).val();
+            if(imgsrc.trim()==""){ return; }
+            var left = e.clientX+document.body.scrollLeft+20;
+            var top = e.clientY+document.body.scrollTop+20;
+            $(".showpic").css({left:left,top:top,display:""});
+            if(imgsrc.indexOf('://')<0){ imgsrc = ROOT_PATH  + '/' + imgsrc;	} else{ imgsrc = imgsrc.replace('mac:','http:'); }
+            $(".showpic_img").attr("src", imgsrc);
+        },function (e){
+            $(".showpic").css("display","none");
+        });
+        
+        $('.contents').on('click','.j-editor-remove',function(){
+            var datai = $(this).parent().parent().attr('data-i');
+            $(this).parent().parent().remove();
+        });
+        
+        
+        
+        $('.contents').on('click','.j-editor-up',function(){
+            var current = $(this).parent().parent();
+           
+            var current_index = current.index();
+            var current_i = current.attr('data-i');
+            var prev = current.prev();
+            var prev_i = prev.attr('data-i');
+            if(current_index>0){
+                current.insertBefore(prev);
+            }
+        });
+        $('.contents').on('click','.j-editor-down',function(){
+            var current = $(this).parent().parent();
+            var current_index = current.index();
+            var current_i = current.attr('data-i');
+            var next = current.next();
+            var next_i = next.attr('data-i');
+
+            if(next.length>0){
+                current.insertAfter(next);
+            }
+        });
+
+
+    });
+    
+    
+   
+    
+    
+    
+    function del_indexType(obj)
+    {
+        
+        $(obj).parent().remove(); 
+    }
+    
+    function add_indexType()
+    {
+        sy_type_len++;
+        var html = '<div class="layui-form-item" data-i="'+sy_type_len+'"><label class="layui-form-label">分类ID：</label><div class="layui-input-inline"><input type="text" name="index[sy_type][type_id][]" placeholder="请输入" value="" class="layui-input"></div><div class="layui-form-mid">分类名称：</div><div class="layui-input-inline"><input type="text" name="index[sy_type][type_name][]" placeholder="请输入" value="" class="layui-input"></div><div class="layui-input-inline w400 p10"><a href="javascript:void(0)" class="j-editor-remove">删除</a>&nbsp;<a href="javascript:void(0)" class="j-editor-up">上移</a>&nbsp;<a href="javascript:void(0)" class="j-editor-down">下移</a>&nbsp;</div></div><hr>';
+        $('#indexType').append(html);
+    }
+    
+    function del_more(obj)
+    {
+        
+        $(obj).parent().remove(); 
+    }
+    
+    function add_more()
+    {
+        var html = '<div class="layui-form-item mt10"><label class="layui-form-label">图片：</label><div class="layui-input-inline"><input type="text" name="wode[more][list][img][]" placeholder="请输入" value="" class="layui-input"></div><div class="layui-form-mid">appid：</div><div class="layui-input-inline"><input type="text" name="wode[more][list][appid][]" placeholder="请输入" value="" class="layui-input"></div><div class="layui-form-mid">名称：</div><div class="layui-input-inline"><input type="text" name="wode[more][list][name][]" placeholder="请输入" value="" class="layui-input"></div><a class="layui-btn layui-btn-xs" href="javascript:;" onclick="del_more(this)">删除</a></div><hr>';
+        $('#more').append(html);
+      
+    }
+    
+    function del_danmuList(obj)
+    {
+        
+        $(obj).parent().remove(); 
+    }
+    function add_danmuList()
+    {
+        var html = '<div class="layui-form-item mt10"><label class="layui-form-label">内容：</label><div class="layui-input-inline"><input type="text" name="play[danmuList][text][]" placeholder="请输入内容" value="" class="layui-input"></div><div class="layui-form-mid">颜色：</div><div class="layui-input-inline"><input type="color" name="play[danmuList][color][]" placeholder="请输入颜色" value="" class="layui-input color"></div><div class="layui-form-mid">时间：</div><div class="layui-input-inline"><input type="text" name="play[danmuList][time][]" placeholder="请输入时间" value="" class="layui-input"></div><a class="layui-btn layui-btn-xs" href="javascript:;" onclick="del_danmuList(this)">删除</a></div><hr>';
+        $('#danmuList').append(html);
+      
+    }
+    
+    function del_vodPlayer(obj)
+    {
+        
+        $(obj).parent().remove(); 
+    }
+   function add_vodPlayer()
+   {
+       vodPlayer_len++;
+        var html = '<div class="layui-form-item data-i="'+vodPlayer_len+'"><label class="layui-form-label">标识：</label><div class="layui-input-inline"><input type="text" name="play[vodPlayer][id][]" placeholder="请输入标识" value="" class="layui-input"></div><div class="layui-form-mid">名称：</div><div class="layui-input-inline"><input type="text" name="play[vodPlayer][title][]" placeholder="请输入名称" value="" class="layui-input color"></div><div class="layui-input-inline w400 p10"><a href="javascript:void(0)" class="j-editor-remove">删除</a>&nbsp;<a href="javascript:void(0)" class="j-editor-up">上移</a>&nbsp;<a href="javascript:void(0)" class="j-editor-down">下移</a>&nbsp;</div></div><hr>';
+        $('#vodPlayer').append(html);
+      
+    }
+</script>
+
+</body>
+</html>
